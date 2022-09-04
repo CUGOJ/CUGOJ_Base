@@ -12,7 +12,9 @@
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/bin/Debug/net6.0/CUGOJ_Base.dll",
             "args": [
-                "-debug"
+                "-debug",
+                "-mysql",
+                "server=1.15.93.80;port=4000;database=cugoj;user=cugoj;password=cugoj123456"
             ],
             "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console

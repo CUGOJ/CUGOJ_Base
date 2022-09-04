@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace CUGOJ.Base.Dao.DB.Models
+{
+    /// <summary>
+    /// 队员表
+    /// </summary>
+    public partial class TeamUser
+    {
+        /// <summary>
+        /// 自增ID
+        /// </summary>
+        public ulong Id { get; set; }
+        /// <summary>
+        /// 用户Id
+        /// </summary>
+        public ulong UserId { get; set; }
+        /// <summary>
+        /// 队伍Id
+        /// </summary>
+        public ulong TeamId { get; set; }
+        /// <summary>
+        /// 用户类型
+        /// </summary>
+        public int UserType { get; set; }
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public int Status { get; set; }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateTime { get; set; }
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime UpdateTime { get; set; }
+    }
+}

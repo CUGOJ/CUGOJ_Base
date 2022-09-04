@@ -31,7 +31,7 @@ try
         }
     }
 
-    await CUGOJ.CUGOJ_Tools.RPC.RPCService.StartBaseService<CUGOJ.BaseService.BaseServiceHandler>(connectionString);
+    await CUGOJ.CUGOJ_Tools.RPC.RPCService.StartBaseService<CUGOJ.BaseService.BaseServiceHandler>(connectionString, CUGOJ.Base.Dao.DB.DBContext.InitDB);
 }
 catch (Exception e)
 {

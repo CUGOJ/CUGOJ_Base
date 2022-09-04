@@ -1,4 +1,5 @@
 using CUGOJ.RPC.Gen.Services.Base;
+using CUGOJ.Base.Dao.DB;
 namespace CUGOJ.BaseService;
 
 public class BaseServiceHandler : CUGOJ.RPC.Gen.Services.Base.BaseService.IAsync
@@ -29,7 +30,21 @@ public class BaseServiceHandler : CUGOJ.RPC.Gen.Services.Base.BaseService.IAsync
 
     public virtual async Task<MulGetProblemInfoResponse> MulGetProblemInfo(MulGetProblemInfoRequest req, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        MulGetProblemInfoResponse resp = new MulGetProblemInfoResponse();
+        try
+        {
+            if (DBContext.ProblemContext == null)
+                throw new Exception("数据库连接失败");
+            bool IsGetDetail = req.__isset.IsGetProblemContent && req.IsGetProblemContent;
+            resp.ProblemList = await DBContext.ProblemContext.MulGetProblemStruct(req.ProblemIDList, IsGetDetail);
+            resp.BaseResp = RPCTools.SuccessBaseResp();
+        }
+        catch (Exception e)
+        {
+            Logger.Error("MulGetProblemInfo出错, {0}", e);
+            resp.BaseResp = RPCTools.ErrorBaseResp(e);
+        }
+        return resp;
     }
     public virtual async Task<GetProblemListResponse> GetProblemList(GetProblemListRequest req, CancellationToken cancellationToken = default)
     {

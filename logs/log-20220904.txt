@@ -1,0 +1,46 @@
+2022-09-04 14:30:58.748 +08:00 [ERR] MulGetProblemInfo出错, System.InvalidOperationException: The LINQ expression 'DbSet<ProblemBase>()
+    .Where(p => __IDList_0.IndexOf(p.Id) != -1)' could not be translated. Additional information: Translation of method 'System.Collections.Generic.List<ulong>.IndexOf' failed. If this method can be mapped to your custom function, see https://go.microsoft.com/fwlink/?linkid=2132413 for more information. Either rewrite the query in a form that can be translated, or switch to client evaluation explicitly by inserting a call to 'AsEnumerable', 'AsAsyncEnumerable', 'ToList', or 'ToListAsync'. See https://go.microsoft.com/fwlink/?linkid=2101038 for more information.
+   at Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.<VisitMethodCall>g__CheckTranslated|15_0(ShapedQueryExpression translated, <>c__DisplayClass15_0& )
+   at Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.VisitMethodCall(MethodCallExpression methodCallExpression)
+   at System.Linq.Expressions.MethodCallExpression.Accept(ExpressionVisitor visitor)
+   at System.Linq.Expressions.ExpressionVisitor.Visit(Expression node)
+   at Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.VisitMethodCall(MethodCallExpression methodCallExpression)
+   at System.Linq.Expressions.MethodCallExpression.Accept(ExpressionVisitor visitor)
+   at System.Linq.Expressions.ExpressionVisitor.Visit(Expression node)
+   at Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.VisitMethodCall(MethodCallExpression methodCallExpression)
+   at System.Linq.Expressions.MethodCallExpression.Accept(ExpressionVisitor visitor)
+   at System.Linq.Expressions.ExpressionVisitor.Visit(Expression node)
+   at Microsoft.EntityFrameworkCore.Query.QueryCompilationContext.CreateQueryExecutor[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.CompiledQueryCache.GetOrAddQuery[TResult](Object cacheKey, Func`1 compiler)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteAsync[TResult](Expression query, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.ExecuteAsync[TResult](Expression expression, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryable`1.GetAsyncEnumerator(CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable`1.GetAsyncEnumerator()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at CUGOJ.Base.Dao.DB.DBProblemContext.MulGetProblemStruct(List`1 ProblemIDList, Boolean IsGetDetail) in /root/src/CUGOJ/CUGOJ_Base/Dao/DB/DBProblemContext.cs:line 27
+   at CUGOJ.BaseService.BaseServiceHandler.MulGetProblemInfo(MulGetProblemInfoRequest req, CancellationToken cancellationToken) in /root/src/CUGOJ/CUGOJ_Base/BaseService.cs:line 39
+2022-09-04 14:34:32.987 +08:00 [ERR] MulGetProblemInfo出错, System.InvalidOperationException: The LINQ expression 'DbSet<ProblemBase>()
+    .Where(p => __IDList_0.IndexOf(p.Id) != -1)' could not be translated. Additional information: Translation of method 'System.Collections.Generic.List<ulong>.IndexOf' failed. If this method can be mapped to your custom function, see https://go.microsoft.com/fwlink/?linkid=2132413 for more information. Either rewrite the query in a form that can be translated, or switch to client evaluation explicitly by inserting a call to 'AsEnumerable', 'AsAsyncEnumerable', 'ToList', or 'ToListAsync'. See https://go.microsoft.com/fwlink/?linkid=2101038 for more information.
+   at Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.<VisitMethodCall>g__CheckTranslated|15_0(ShapedQueryExpression translated, <>c__DisplayClass15_0& )
+   at Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.VisitMethodCall(MethodCallExpression methodCallExpression)
+   at System.Linq.Expressions.MethodCallExpression.Accept(ExpressionVisitor visitor)
+   at System.Linq.Expressions.ExpressionVisitor.Visit(Expression node)
+   at Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.VisitMethodCall(MethodCallExpression methodCallExpression)
+   at System.Linq.Expressions.MethodCallExpression.Accept(ExpressionVisitor visitor)
+   at System.Linq.Expressions.ExpressionVisitor.Visit(Expression node)
+   at Microsoft.EntityFrameworkCore.Query.QueryableMethodTranslatingExpressionVisitor.VisitMethodCall(MethodCallExpression methodCallExpression)
+   at System.Linq.Expressions.MethodCallExpression.Accept(ExpressionVisitor visitor)
+   at System.Linq.Expressions.ExpressionVisitor.Visit(Expression node)
+   at Microsoft.EntityFrameworkCore.Query.QueryCompilationContext.CreateQueryExecutor[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.CompiledQueryCache.GetOrAddQuery[TResult](Object cacheKey, Func`1 compiler)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteAsync[TResult](Expression query, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.ExecuteAsync[TResult](Expression expression, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryable`1.GetAsyncEnumerator(CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.ConfiguredCancelableAsyncEnumerable`1.GetAsyncEnumerator()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at CUGOJ.Base.Dao.DB.DBProblemContext.MulGetProblemStruct(List`1 ProblemIDList, Boolean IsGetDetail) in /root/src/CUGOJ/CUGOJ_Base/Dao/DB/DBProblemContext.cs:line 27
+   at CUGOJ.BaseService.BaseServiceHandler.MulGetProblemInfo(MulGetProblemInfoRequest req, CancellationToken cancellationToken) in /root/src/CUGOJ/CUGOJ_Base/BaseService.cs:line 39
+2022-09-04 14:43:25.320 +08:00 [ERR] 查找题目出错, 详细信息与基本信息不匹配,ProblemIDLis: [1,2],base: ["CUGOJ.Base.Dao.DB.Models.ProblemBase"],contents, [],users: null,sources: null
+2022-09-04 14:43:25.398 +08:00 [ERR] MulGetProblemInfo出错, System.Exception: 查找题目出错
+   at CUGOJ.Base.Dao.DB.DBProblemContext.MulGetProblemStruct(List`1 ProblemIDList, Boolean IsGetDetail) in /root/src/CUGOJ/CUGOJ_Base/Dao/DB/DBProblemContext.cs:line 51
+   at CUGOJ.BaseService.BaseServiceHandler.MulGetProblemInfo(MulGetProblemInfoRequest req, CancellationToken cancellationToken) in /root/src/CUGOJ/CUGOJ_Base/BaseService.cs:line 39
