@@ -1,4 +1,5 @@
 using CUGOJ.CUGOJ_Tools.Trace;
+using CUGOJ.Base.Dao.DB.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 namespace CUGOJ.Base.Dao.DB;
@@ -20,11 +21,6 @@ internal static class DBContext
             return _factory.CreateDbContext();
         }
     }
-    private static IDBUserContext? _userContext = null;
-    public static IDBUserContext? UserContext { get => _userContext; }
-
-    private static IDBProblemContext? _problemContext = null;
-    public static IDBProblemContext? ProblemContext { get => _problemContext; }
     public static void InitDB()
     {
         if (_initCount != 0) return;
@@ -35,14 +31,10 @@ internal static class DBContext
             if (CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress != string.Empty &&
             CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress != "null")
             {
-                _factory = new PooledDbContextFactory<Context.CUGOJContext>(new DbContextOptionsBuilder<Context.CUGOJContext>()
+                var options = new DbContextOptionsBuilder<CUGOJContext>()
                 .UseMySql(CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"))
-                .Options);
-                if (_factory != null)
-                {
-                    _problemContext = TraceFactory.CreateTracableObject<DBProblemContext>(true, true);
-                    _userContext = TraceFactory.CreateTracableObject<DBUserContext>(true, true);
-                }
+                .Options;
+                _factory = new PooledDbContextFactory<CUGOJContext>(options);
             }
         }
     }

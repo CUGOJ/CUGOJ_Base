@@ -1,6 +1,6 @@
 namespace CUGOJ.Base.Dao.DB;
 
-public class DBUserContext : IDBUserContext
+public class DBUserContext : IUserContext
 {
     public virtual async Task<List<UserStruct>> MulGetUserStruct(List<long> UserIDList, bool IsGetDetail)
     {

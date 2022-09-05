@@ -3,7 +3,7 @@ using CUGOJ.Base.Conv;
 using Microsoft.EntityFrameworkCore;
 namespace CUGOJ.Base.Dao.DB;
 
-public class DBProblemContext : IDBProblemContext
+public class DBProblemContext : IProblemContext
 {
     public virtual async Task<List<ProblemStruct>> MulGetProblemStruct(List<long> ProblemIDList, bool IsGetDetail)
     {

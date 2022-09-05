@@ -3,7 +3,7 @@ using CUGOJ.Base.Conv;
 using Microsoft.EntityFrameworkCore;
 namespace CUGOJ.Base.Dao.DB;
 
-public class DBContestContext : IDBContestContext
+public class DBContestContext : IContestContext
 {
     public virtual async Task<List<ContestStruct>> MulGetContestStruct(List<long> ContestIDList, bool IsGetDetail)
     {
@@ -76,4 +76,6 @@ public class DBContestContext : IDBContestContext
         await context.SaveChangesAsync();
         return CommonConv.ULong2Long(contestBase.Id);
     }
+
+
 }
