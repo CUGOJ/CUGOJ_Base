@@ -1,4 +1,6 @@
 using CUGOJ.CUGOJ_Tools.Trace;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 namespace CUGOJ.Base.Dao.DB;
 
 internal static class DBContext
@@ -6,10 +8,17 @@ internal static class DBContext
     private static object _initLock = new();
     private static int _initCount = new();
 
-    private static Context.CUGOJContext? _context = null;
-    public static Context.CUGOJContext? Context
+    private static IDbContextFactory<Context.CUGOJContext>? _factory;
+    public static Context.CUGOJContext Context
     {
-        get => _context;
+        get
+        {
+            if (_factory == null)
+            {
+                throw new Exception("未能成功连接到DB, 请检查DB配置");
+            }
+            return _factory.CreateDbContext();
+        }
     }
     private static IDBUserContext? _userContext = null;
     public static IDBUserContext? UserContext { get => _userContext; }
@@ -26,8 +35,10 @@ internal static class DBContext
             if (CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress != string.Empty &&
             CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress != "null")
             {
-                _context = new Context.CUGOJContext();
-                if (_context != null)
+                _factory = new PooledDbContextFactory<Context.CUGOJContext>(new DbContextOptionsBuilder<Context.CUGOJContext>()
+                .UseMySql(CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"))
+                .Options);
+                if (_factory != null)
                 {
                     _problemContext = TraceFactory.CreateTracableObject<DBProblemContext>(true, true);
                     _userContext = TraceFactory.CreateTracableObject<DBUserContext>(true, true);

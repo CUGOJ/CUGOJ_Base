@@ -25,7 +25,21 @@ public class BaseServiceHandler : CUGOJ.RPC.Gen.Services.Base.BaseService.IAsync
     }
     public virtual async Task<SaveProblemInfoResponse> SaveProblemInfo(SaveProblemInfoRequest req, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        SaveProblemInfoResponse resp = new SaveProblemInfoResponse();
+        try
+        {
+            if (DBContext.ProblemContext == null)
+                throw new Exception("数据库连接失败");
+            long problemID = await DBContext.ProblemContext.SaveProblemStruct(req.Problem);
+            resp.ProblemID = problemID;
+            resp.BaseResp = RPCTools.SuccessBaseResp();
+        }
+        catch (Exception e)
+        {
+            Logger.Error("保存题目信息出错, {0}", e);
+            resp.BaseResp = RPCTools.ErrorBaseResp();
+        }
+        return resp;
     }
 
     public virtual async Task<MulGetProblemInfoResponse> MulGetProblemInfo(MulGetProblemInfoRequest req, CancellationToken cancellationToken = default)
@@ -45,6 +59,11 @@ public class BaseServiceHandler : CUGOJ.RPC.Gen.Services.Base.BaseService.IAsync
             resp.BaseResp = RPCTools.ErrorBaseResp(e);
         }
         return resp;
+    }
+
+    public virtual async Task<GetContestProblemResponse> GetContestProblem(GetContestProblemRequest req, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
     public virtual async Task<GetProblemListResponse> GetProblemList(GetProblemListRequest req, CancellationToken cancellationToken = default)
     {

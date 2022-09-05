@@ -8,4 +8,5 @@ public interface IDBUserContext
 public interface IDBProblemContext
 {
     Task<List<ProblemStruct>> MulGetProblemStruct(List<long> ProblemIDList, bool IsGetDetail);
+    Task<long> SaveProblemStruct(ProblemStruct problemStruct);
 }
