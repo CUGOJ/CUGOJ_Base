@@ -49,8 +49,8 @@ public class BaseServiceHandler : CUGOJ.RPC.Gen.Services.Base.BaseService.IAsync
         {
             if (DaoContext.ProblemContext == null)
                 throw new Exception("数据库连接失败");
-            bool IsGetDetail = req.__isset.IsGetProblemContent && req.IsGetProblemContent;
-            resp.ProblemList = await DaoContext.ProblemContext.MulGetProblemStruct(req.ProblemIDList, IsGetDetail);
+            bool isGetDetail = req.__isset.IsGetProblemContent && req.IsGetProblemContent;
+            resp.ProblemList = await DaoContext.ProblemContext.MulGetProblemStruct(req.ProblemIDList, isGetDetail);
             resp.BaseResp = RPCTools.SuccessBaseResp();
         }
         catch (Exception e)
@@ -83,7 +83,4 @@ public class BaseServiceHandler : CUGOJ.RPC.Gen.Services.Base.BaseService.IAsync
     {
         throw new NotImplementedException();
     }
-
-
-
 }

@@ -2,7 +2,8 @@ namespace CUGOJ.Base.Dao;
 
 public interface IUserContext
 {
-    Task<List<UserStruct>> MulGetUserStruct(List<long> UserIDList, bool IsGetDetail);
+    Task<List<UserStruct>> MulGetUserStruct(List<long> userIDList, bool isGetDetail);
+    Task<long> SaveUserStruct(UserStruct userStruct);
 }
 
 public interface IProblemContext

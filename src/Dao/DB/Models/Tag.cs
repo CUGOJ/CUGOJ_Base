@@ -11,7 +11,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 标签ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 标签名称
         /// </summary>

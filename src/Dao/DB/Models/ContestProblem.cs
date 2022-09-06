@@ -11,27 +11,27 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 赛题ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 比赛ID
         /// </summary>
-        public ulong ContestId { get; set; }
+        public long ContestId { get; set; }
         /// <summary>
         /// 题目ID
         /// </summary>
-        public ulong ProblemId { get; set; }
+        public long ProblemId { get; set; }
         /// <summary>
         /// 提交数
         /// </summary>
-        public ulong SubmissionCount { get; set; }
+        public long SubmissionCount { get; set; }
         /// <summary>
         /// AC数
         /// </summary>
-        public ulong AcceptedCount { get; set; }
+        public long AcceptedCount { get; set; }
         /// <summary>
         /// 版本
         /// </summary>
-        public ulong Version { get; set; }
+        public long Version { get; set; }
         /// <summary>
         /// 状态枚举
         /// </summary>

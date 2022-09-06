@@ -7,12 +7,7 @@ public class DBProblemContext : IProblemContext
 {
     public virtual async Task<List<ProblemStruct>> MulGetProblemStruct(List<long> problemIDList, bool isGetDetail)
     {
-<<<<<<< HEAD
-        List<ulong> IDList = Conv.CommonConv.LongList2ULongList(problemIDList);
-=======
         using var context = DBContext.Context;
-        List<ulong> IDList = Conv.CommonConv.LongList2ULongList(ProblemIDList);
->>>>>>> 6b4a933830171b316650eb65cc0801ed23347cda
         List<ProblemBase>? problemBases = null;
         List<ProblemContent>? problemContents = null;
         List<User>? users = null;
@@ -20,18 +15,18 @@ public class DBProblemContext : IProblemContext
         if (isGetDetail)
         {
             problemBases = await (from b in context.ProblemBases
-                                  where IDList.Contains(b.Id)
+                                  where problemIDList.Contains(b.Id)
                                   orderby b.Id
                                   select b).ToListAsync();
             problemContents = await (from b in context.ProblemContents
-                                     where IDList.Contains(b.ProblemId)
+                                     where problemIDList.Contains(b.ProblemId)
                                      orderby b.ProblemId
                                      select b).ToListAsync();
         }
         else
         {
             problemBases = await (from b in context.ProblemBases
-                                  where IDList.Contains(b.Id)
+                                  where problemIDList.Contains(b.Id)
                                   orderby b.Id
                                   select new ProblemBase
                                   {
@@ -75,11 +70,11 @@ public class DBProblemContext : IProblemContext
 
         if (problemStruct.Content != null && problemStruct.Content != string.Empty)
         {
-            problemStruct.ID = CommonConv.ULong2Long(problemBase.Id);
-            var problemContent = Conv.Conv.ProblemConv.ProblemStruct2ContentPo(problemStruct);
+            problemStruct.ID = problemBase.Id;
+            ProblemContent problemContent = Conv.Conv.ProblemConv.ProblemStruct2ContentPo(problemStruct);
             context.Update(problemContent);
         }
         await context.SaveChangesAsync();
-        return CommonConv.ULong2Long(problemBase.Id);
+        return problemBase.Id;
     }
 }

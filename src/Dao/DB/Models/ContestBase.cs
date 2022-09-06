@@ -11,15 +11,15 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 比赛ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 承办组织
         /// </summary>
-        public ulong OrganizationId { get; set; }
+        public long OrganizationId { get; set; }
         /// <summary>
         /// 所有者
         /// </summary>
-        public ulong OwnerId { get; set; }
+        public long OwnerId { get; set; }
         /// <summary>
         /// 赛事类型
         /// </summary>

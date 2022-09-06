@@ -11,7 +11,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 自增ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 队伍名
         /// </summary>
@@ -27,11 +27,11 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 队长
         /// </summary>
-        public ulong Leader { get; set; }
+        public long Leader { get; set; }
         /// <summary>
         /// 所属组织
         /// </summary>
-        public ulong OrganizationId { get; set; }
+        public long OrganizationId { get; set; }
         /// <summary>
         /// 头像
         /// </summary>

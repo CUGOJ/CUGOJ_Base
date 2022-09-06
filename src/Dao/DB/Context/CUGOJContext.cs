@@ -8,6 +8,10 @@ namespace CUGOJ.Base.Dao.DB.Context
 {
     public partial class CUGOJContext : DbContext
     {
+        public CUGOJContext()
+        {
+        }
+
         public CUGOJContext(DbContextOptions<CUGOJContext> options)
             : base(options)
         {

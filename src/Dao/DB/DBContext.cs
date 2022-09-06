@@ -32,7 +32,7 @@ internal static class DBContext
             CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress != "null")
             {
                 var options = new DbContextOptionsBuilder<CUGOJContext>()
-                .UseMySql(CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"))
+                .UseMySql(CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"))
                 .Options;
                 _factory = new PooledDbContextFactory<CUGOJContext>(options);
             }

@@ -11,7 +11,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// ScoreID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// Score名称
         /// </summary>
@@ -23,15 +23,15 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 目标主体ID
         /// </summary>
-        public ulong TargetId { get; set; }
+        public long TargetId { get; set; }
         /// <summary>
         /// 聚合基准
         /// </summary>
-        public ulong AggId { get; set; }
+        public long AggId { get; set; }
         /// <summary>
         /// 得分
         /// </summary>
-        public ulong Value { get; set; }
+        public long Value { get; set; }
         /// <summary>
         /// 状态枚举
         /// </summary>
