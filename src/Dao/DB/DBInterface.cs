@@ -2,10 +2,12 @@ namespace CUGOJ.Base.Dao.DB;
 
 public interface IDBUserContext
 {
-    Task<List<UserStruct>> MulGetUserStruct(List<long> UserIDList, bool IsGetDetail);
+    Task<List<UserStruct>> MulGetUserStruct(List<long> userIDList, bool isGetDetail);
+
+    void MulSaveUserStruct(List<UserStruct> userStructList);
 }
 
 public interface IDBProblemContext
 {
-    Task<List<ProblemStruct>> MulGetProblemStruct(List<long> ProblemIDList, bool IsGetDetail);
+    Task<List<ProblemStruct>> MulGetProblemStruct(List<long> problemIDList, bool isGetDetail);
 }

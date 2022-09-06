@@ -43,7 +43,7 @@ namespace CUGOJ.Base.Dao.DB.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"));
+                optionsBuilder.UseMySql(CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.26-mysql"));
             }
         }
 
