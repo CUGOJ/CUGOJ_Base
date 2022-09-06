@@ -2,7 +2,7 @@ using CUGOJ.Base.Dao.DB.Models;
 using Microsoft.EntityFrameworkCore;
 namespace CUGOJ.Base.Dao.DB;
 
-public class DBUserContext : IDBUserContext
+public class DBUserContext : IUserContext
 {
     public virtual async Task<List<UserStruct>> MulGetUserStruct(List<long> userIDList, bool isGetDetail)
     {
