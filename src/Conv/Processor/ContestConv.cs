@@ -7,7 +7,7 @@ public class ContestConv
     {
         ContestStruct contestStruct = new ContestStruct
         {
-            ID = CommonConv.ULong2Long(contestBase.Id),
+            ID = contestBase.Id,
             Title = contestBase.Title,
             Status = ((ContestStatusEnum)contestBase.Status),
             CreateTime = CommonConv.DateTime2Unix(contestBase.CreateTime),
@@ -23,7 +23,7 @@ public class ContestConv
         if (organization != null)
             contestStruct.Organization = Conv.OrganizationConv.OrganizationPo2Struct(organization);
         else
-            contestStruct.Organization = new OrganizationStruct { ID = CommonConv.ULong2Long(contestBase.OrganizationId) };
+            contestStruct.Organization = new OrganizationStruct { ID = contestBase.OrganizationId };
         return contestStruct;
     }
 
@@ -31,7 +31,7 @@ public class ContestConv
     {
         return new ContestBase
         {
-            Id = CommonConv.Long2ULong(contestStruct.ID),
+            Id = contestStruct.ID,
             Title = contestStruct.Title,
             Status = ((int)contestStruct.Status),
             CreateTime = CommonConv.Unix2DateTime(contestStruct.CreateTime),
@@ -41,8 +41,8 @@ public class ContestConv
             Type = ((int)contestStruct.Type),
             Profile = contestStruct.Profile,
             Writers = contestStruct.Writer,
-            OrganizationId = CommonConv.Long2ULong(contestStruct.Organization.ID),
-            OwnerId = CommonConv.Long2ULong(contestStruct.Owner.ID),
+            OrganizationId = contestStruct.Organization.ID,
+            OwnerId = contestStruct.Owner.ID,
         };
     }
 
@@ -50,7 +50,7 @@ public class ContestConv
     {
         return new ContestContent
         {
-            Id = CommonConv.Long2ULong(contestStruct.ID),
+            Id = contestStruct.ID,
             Content = contestStruct.Content,
         };
     }

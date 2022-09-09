@@ -19,7 +19,7 @@ namespace CUGOJ.Base.Dao
                 if (_initCount != 0) return;
                 _initCount++;
                 CUGOJ.Base.Dao.DB.DBContext.InitDB();
-                CUGOJ.CUGOJ_Tools.Redis.RedisContext.InitRedis();
+                // CUGOJ.CUGOJ_Tools.Redis.RedisContext.InitRedis();
 
                 _problemContext = TraceFactory.CreateTracableObject<RedisProblemContext>(true, true);
                 _userContext = TraceFactory.CreateTracableObject<DBUserContext>(true, true);

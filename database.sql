@@ -127,8 +127,8 @@ CREATE TABLE `contest_base`(
     `owner_id` BIGINT  NOT NULL COMMENT '所有者',
     `type` INT NOT NULL COMMENT '赛事类型',
     `writers` VARCHAR(512) DEFAULT NULL COMMENT '出题人',
-    `start_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '开始时间',
-    `end_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT '结束时间',
+    `start_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '开始时间',
+    `end_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT '结束时间',
     `title` VARCHAR(64) NOT NULL COMMENT '比赛名称',
     `profile` VARCHAR(1024) DEFAULT NULL COMMENT '赛事的简单描述',
     `status` INT NOT NULL COMMENT '比赛状态枚举',
@@ -175,18 +175,21 @@ CREATE TABLE `contest_problem`(
 
 CREATE TABLE `submission_base`(
     `id` BIGINT  NOT NULL AUTO_INCREMENT COMMENT '提交ID',
-    `submit_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '提交时间',
+    `submit_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '提交时间',
     `submitter_id` BIGINT  NOT NULL COMMENT '提交者ID',
     `submitter_type` INT  NOT NULL COMMENT '提交者类型（团队或个人）',
     `status` INT NOT NULL COMMENT '提交结果',
     `type` INT NOT NULL COMMENT '提交类型',
     `contest_id` BIGINT  COMMENT '关联的比赛',
     `problem_id` BIGINT  COMMENT '关联的题目',
+    `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `properties` VARCHAR(1024) DEFAULT NULL COMMENT '特定配置JSON',
     PRIMARY KEY(`id`),
     KEY `idx_submitter_problem` (`submitter_id`, `problem_id`),
     KEY `idx_contest_submitter` (`contest_id`, `submitter_id`),
-    KEY `idx_contest_problem` (`contest_id`, `problem_id`)
+    KEY `idx_contest_problem` (`contest_id`, `problem_id`),
+    KEY `idx_contest_create_time` (`contest_id`, `create_time`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '提交基本信息表';
 
 CREATE TABLE `submission_content`(

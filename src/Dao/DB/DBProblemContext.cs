@@ -1,5 +1,4 @@
 using CUGOJ.Base.Dao.DB.Models;
-using CUGOJ.Base.Conv;
 using Microsoft.EntityFrameworkCore;
 namespace CUGOJ.Base.Dao.DB;
 

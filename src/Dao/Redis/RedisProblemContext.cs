@@ -9,14 +9,14 @@ public class RedisProblemContext : IProblemContext
         _dbProblemContext = TraceFactory.CreateTracableObject<DBProblemContext>(true, true);
     }
 
-    public virtual async Task<List<ProblemStruct>> MulGetProblemStruct(List<long> ProblemIDList, bool IsGetDetail)
+    public virtual async Task<List<ProblemStruct>> MulGetProblemStruct(List<long> ProblemIDList, bool isGetDetail)
     {
         List<ProblemStruct> problemList = new();
         List<long> missIDList = new();
         foreach (long problemID in ProblemIDList)
         {
             ProblemStruct? problemStruct;
-            if (!IsGetDetail)
+            if (!isGetDetail)
             {
                 problemStruct = RedisContext.Context?.Get<ProblemStruct>("problem_" + problemID.ToString());
             }
@@ -33,10 +33,10 @@ public class RedisProblemContext : IProblemContext
                 problemList.Add(problemStruct);
             }
         }
-        List<ProblemStruct> missProblemList = await _dbProblemContext.MulGetProblemStruct(missIDList, IsGetDetail);
+        List<ProblemStruct> missProblemList = await _dbProblemContext.MulGetProblemStruct(missIDList, isGetDetail);
         foreach (ProblemStruct problemStruct in missProblemList)
         {
-            if (!IsGetDetail)
+            if (!isGetDetail)
             {
                 RedisContext.Context?.Set("problem_" + problemStruct.ID.ToString(), problemStruct, TimeSpan.FromSeconds(30));
             }
