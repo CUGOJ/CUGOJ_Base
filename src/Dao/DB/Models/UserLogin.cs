@@ -11,15 +11,15 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 自增ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 用户ID
         /// </summary>
-        public ulong UserId { get; set; }
+        public long UserId { get; set; }
         /// <summary>
         /// 登录IP
         /// </summary>
-        public ulong Ip { get; set; }
+        public long Ip { get; set; }
         /// <summary>
         /// 设备ID
         /// </summary>
@@ -27,11 +27,11 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 平台
         /// </summary>
-        public uint Platform { get; set; }
+        public int Platform { get; set; }
         /// <summary>
         /// 登录类型
         /// </summary>
-        public uint LoginType { get; set; }
+        public int LoginType { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>

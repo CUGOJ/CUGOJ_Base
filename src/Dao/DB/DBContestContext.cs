@@ -1,33 +1,31 @@
 using CUGOJ.Base.Dao.DB.Models;
-using CUGOJ.Base.Conv;
 using Microsoft.EntityFrameworkCore;
 namespace CUGOJ.Base.Dao.DB;
 
 public class DBContestContext : IContestContext
 {
-    public virtual async Task<List<ContestStruct>> MulGetContestStruct(List<long> ContestIDList, bool IsGetDetail)
+    public virtual async Task<List<ContestStruct>> MulGetContestStruct(List<long> contestIDList, bool isGetDetail)
     {
         using var context = DBContext.Context;
-        List<ulong> IDList = Conv.CommonConv.LongList2ULongList(ContestIDList);
         List<ContestBase>? contestBases = null;
         List<ContestContent>? contestContents = null;
         List<User>? users = null;
         List<Organization>? organizations = null;
-        if (IsGetDetail)
+        if (isGetDetail)
         {
             contestBases = await (from b in context.ContestBases
-                                  where IDList.Contains(b.Id)
-                                  orderby b.Id
+                                  where contestIDList.Contains(b.Id)
+            orderby b.Id
                                   select b).ToListAsync();
             contestContents = await (from b in context.ContestContents
-                                     where IDList.Contains(b.ContestId)
+                                     where contestIDList.Contains(b.ContestId)
                                      orderby b.ContestId
                                      select b).ToListAsync();
         }
         else
         {
             contestBases = await (from b in context.ContestBases
-                                  where IDList.Contains(b.Id)
+                                  where contestIDList.Contains(b.Id)
                                   orderby b.Id
                                   select new ContestBase
                                   {
@@ -43,14 +41,14 @@ public class DBContestContext : IContestContext
         }
         if (contestBases == null)
         {
-            Logger.Error("查找比赛出错, 无法获取比赛基本信息,ContestIDLis: {0}", ContestIDList);
+            Logger.Error("查找比赛出错, 无法获取比赛基本信息,ContestIDLis: {0}", contestIDList);
             throw new Exception("查找比赛出错");
         }
         if ((contestContents != null && contestContents.Count != contestBases.Count)
         || (users != null && users.Count != contestBases.Count)
         || (organizations != null && organizations.Count != contestBases.Count))
         {
-            Logger.Error("查找比赛出错, 详细信息与基本信息不匹配,ContestIDLis: {0},base: {1},contents, {2},users: {3},organizations: {4}", ContestIDList, contestBases, contestContents, users, organizations);
+            Logger.Error("查找比赛出错, 详细信息与基本信息不匹配,ContestIDLis: {0},base: {1},contents, {2},users: {3},organizations: {4}", contestIDList, contestBases, contestContents, users, organizations);
             throw new Exception("查找比赛出错");
         }
         List<ContestStruct> contestStructs = new List<ContestStruct>();
@@ -69,12 +67,12 @@ public class DBContestContext : IContestContext
         context.ContestBases.Update(contestBase);
         if (contestStruct.Content != null && contestStruct.Content != string.Empty)
         {
-            contestStruct.ID = CommonConv.ULong2Long(contestBase.Id);
+            contestStruct.ID = contestBase.Id;
             ContestContent contestContent = Conv.Conv.ContestConv.ContestStruct2ContentPo(contestStruct);
             context.ContestContents.Update(contestContent);
         }
         await context.SaveChangesAsync();
-        return CommonConv.ULong2Long(contestBase.Id);
+        return contestBase.Id;
     }
 
 

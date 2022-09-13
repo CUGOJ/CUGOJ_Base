@@ -11,7 +11,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 提交ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 提交时间
         /// </summary>
@@ -19,11 +19,11 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 提交者ID
         /// </summary>
-        public ulong SubmitterId { get; set; }
+        public long SubmitterId { get; set; }
         /// <summary>
         /// 提交者类型（团队或个人）
         /// </summary>
-        public uint SubmitterType { get; set; }
+        public int SubmitterType { get; set; }
         /// <summary>
         /// 提交结果
         /// </summary>
@@ -35,11 +35,19 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 关联的比赛
         /// </summary>
-        public ulong? ContestId { get; set; }
+        public long? ContestId { get; set; }
         /// <summary>
         /// 关联的题目
         /// </summary>
-        public ulong? ProblemId { get; set; }
+        public long? ProblemId { get; set; }
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime UpdateTime { get; set; }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateTime { get; set; }
         /// <summary>
         /// 特定配置JSON
         /// </summary>

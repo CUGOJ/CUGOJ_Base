@@ -11,11 +11,11 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 自增ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 用户ID
         /// </summary>
-        public ulong UserId { get; set; }
+        public long UserId { get; set; }
         /// <summary>
         /// 用户名
         /// </summary>
@@ -43,7 +43,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 所属组织
         /// </summary>
-        public ulong OrganizationId { get; set; }
+        public long OrganizationId { get; set; }
         /// <summary>
         /// 昵称
         /// </summary>
@@ -59,7 +59,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 用户类型1:super admin,2:admin,3:user
         /// </summary>
-        public uint UserType { get; set; }
+        public int UserType { get; set; }
         /// <summary>
         /// 额外信息
         /// </summary>

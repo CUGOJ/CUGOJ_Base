@@ -11,23 +11,23 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 自增ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 比赛ID
         /// </summary>
-        public ulong ContestId { get; set; }
+        public long ContestId { get; set; }
         /// <summary>
         /// 注册人ID
         /// </summary>
-        public ulong RegistrantId { get; set; }
+        public long RegistrantId { get; set; }
         /// <summary>
         /// 注册人类型
         /// </summary>
-        public uint RegistrantType { get; set; }
+        public int RegistrantType { get; set; }
         /// <summary>
         /// 队伍ID
         /// </summary>
-        public ulong? TeamId { get; set; }
+        public long? TeamId { get; set; }
         /// <summary>
         /// 额外信息
         /// </summary>

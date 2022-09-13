@@ -11,7 +11,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 题目ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 题目标题
         /// </summary>
@@ -19,7 +19,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 出题人ID
         /// </summary>
-        public ulong WriterId { get; set; }
+        public long WriterId { get; set; }
         /// <summary>
         /// 针对不同题目类型的描述JSON
         /// </summary>
@@ -31,15 +31,15 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 题目来源
         /// </summary>
-        public ulong SourceId { get; set; }
+        public long SourceId { get; set; }
         /// <summary>
         /// 提交数
         /// </summary>
-        public ulong? SubmissionCount { get; set; }
+        public long? SubmissionCount { get; set; }
         /// <summary>
         /// 通过数
         /// </summary>
-        public ulong? AcceptedCount { get; set; }
+        public long? AcceptedCount { get; set; }
         /// <summary>
         /// 题目类型
         /// </summary>
@@ -51,7 +51,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 版本
         /// </summary>
-        public ulong? Version { get; set; }
+        public long? Version { get; set; }
         /// <summary>
         /// 更新时间
         /// </summary>

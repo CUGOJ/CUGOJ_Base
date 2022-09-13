@@ -68,7 +68,7 @@ namespace CUGOJ.Base.Dao.DB.Context
                     .HasComment("创建时间");
 
                 entity.Property(e => e.EndTime)
-                    .HasColumnType("datetime")
+                    .HasColumnType("timestamp")
                     .HasColumnName("end_time")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
                     .HasComment("结束时间");
@@ -87,7 +87,7 @@ namespace CUGOJ.Base.Dao.DB.Context
                     .HasComment("赛事的简单描述");
 
                 entity.Property(e => e.StartTime)
-                    .HasColumnType("datetime")
+                    .HasColumnType("timestamp")
                     .HasColumnName("start_time")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
                     .HasComment("开始时间");
@@ -639,6 +639,8 @@ namespace CUGOJ.Base.Dao.DB.Context
                 entity.HasComment("提交基本信息表")
                     .UseCollation("utf8mb4_bin");
 
+                entity.HasIndex(e => new { e.ContestId, e.CreateTime }, "idx_contest_create_time");
+
                 entity.HasIndex(e => new { e.ContestId, e.ProblemId }, "idx_contest_problem");
 
                 entity.HasIndex(e => new { e.ContestId, e.SubmitterId }, "idx_contest_submitter");
@@ -652,6 +654,12 @@ namespace CUGOJ.Base.Dao.DB.Context
                 entity.Property(e => e.ContestId)
                     .HasColumnName("contest_id")
                     .HasComment("关联的比赛");
+
+                entity.Property(e => e.CreateTime)
+                    .HasColumnType("timestamp")
+                    .HasColumnName("create_time")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                    .HasComment("创建时间");
 
                 entity.Property(e => e.ProblemId)
                     .HasColumnName("problem_id")
@@ -667,7 +675,7 @@ namespace CUGOJ.Base.Dao.DB.Context
                     .HasComment("提交结果");
 
                 entity.Property(e => e.SubmitTime)
-                    .HasColumnType("datetime")
+                    .HasColumnType("timestamp")
                     .HasColumnName("submit_time")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
                     .HasComment("提交时间");
@@ -683,6 +691,13 @@ namespace CUGOJ.Base.Dao.DB.Context
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
                     .HasComment("提交类型");
+
+                entity.Property(e => e.UpdateTime)
+                    .HasColumnType("timestamp")
+                    .ValueGeneratedOnAddOrUpdate()
+                    .HasColumnName("update_time")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                    .HasComment("更新时间");
             });
 
             modelBuilder.Entity<SubmissionContent>(entity =>

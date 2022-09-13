@@ -9,5 +9,6 @@ public static class Conv
     public static ContestConv ContestConv { get => _contestConv; }
     private static OrganizationConv _organizationConv = TraceFactory.CreateTracableObject<OrganizationConv>(false, false);
     public static OrganizationConv OrganizationConv { get => _organizationConv; }
-
+    private static UserConv _userConv = TraceFactory.CreateTracableObject<UserConv>(false, false);
+    public static UserConv UserConv { get => _userConv; }
 }

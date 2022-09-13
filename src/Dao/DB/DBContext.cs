@@ -1,4 +1,3 @@
-using CUGOJ.CUGOJ_Tools.Trace;
 using CUGOJ.Base.Dao.DB.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -38,6 +37,4 @@ internal static class DBContext
             }
         }
     }
-
-
 }

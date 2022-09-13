@@ -11,7 +11,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 题单ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 题单名称
         /// </summary>
@@ -19,7 +19,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 创建者ID
         /// </summary>
-        public ulong CreatorId { get; set; }
+        public long CreatorId { get; set; }
         /// <summary>
         /// 简短描述
         /// </summary>

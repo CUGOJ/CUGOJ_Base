@@ -6,28 +6,30 @@ public class ProblemConv
     {
         ProblemStruct res = new ProblemStruct()
         {
-            ID = CommonConv.ULong2Long(problemBase.Id),
+            ID = problemBase.Id,
             Title = problemBase.Title,
             Status = ((ProblemStatusEnum)problemBase.Status),
             CreateTime = CommonConv.DateTime2Unix(problemBase.CreateTime),
             UpdateTime = CommonConv.DateTime2Unix(problemBase.UpdateTime),
             Type = ((ProblemTypeEnum)problemBase.Type),
-            Version = CommonConv.ULong2Long(problemBase.Version),
-            AcceptedCount = CommonConv.ULong2Long(problemBase.AcceptedCount),
-            SubmissionCount = CommonConv.ULong2Long(problemBase.SubmissionCount),
+            Version = problemBase.Version ?? 0,
+            AcceptedCount = problemBase.AcceptedCount ?? 0,
+            SubmissionCount = problemBase.SubmissionCount ?? 0,
             Source = new()
             {
-                ID = CommonConv.ULong2Long(problemBase.SourceId)
+                ID = problemBase.SourceId
             },
             ShowID = problemBase.ShowId,
             Writer = new()
             {
-                ID = CommonConv.ULong2Long(problemBase.WriterId)
+                ID = problemBase.WriterId
             },
             Properties = problemBase.Properties
         };
         if (problemContent != null)
+        {
             res.Content = problemContent.Content;
+        }
         return res;
     }
 
@@ -35,18 +37,18 @@ public class ProblemConv
     {
         return new ProblemBase
         {
-            Id = CommonConv.Long2ULong(problemStruct.ID),
+            Id = problemStruct.ID,
             Title = problemStruct.Title,
-            Status = ((int)problemStruct.Status),
+            Status = (int)problemStruct.Status,
             CreateTime = CommonConv.Unix2DateTime(problemStruct.CreateTime),
             UpdateTime = CommonConv.Unix2DateTime(problemStruct.UpdateTime),
-            Type = ((int)problemStruct.Type),
-            Version = CommonConv.Long2ULong(problemStruct.Version),
-            AcceptedCount = CommonConv.Long2ULong(problemStruct.AcceptedCount),
-            SubmissionCount = CommonConv.Long2ULong(problemStruct.SubmissionCount),
-            SourceId = CommonConv.Long2ULong(problemStruct.Source.ID),
+            Type = (int)problemStruct.Type,
+            Version = problemStruct.Version,
+            AcceptedCount = problemStruct.AcceptedCount,
+            SubmissionCount = problemStruct.SubmissionCount,
+            SourceId = problemStruct.Source.ID,
             ShowId = problemStruct.ShowID,
-            WriterId = CommonConv.Long2ULong(problemStruct.Writer.ID),
+            WriterId = problemStruct.Writer.ID,
             Properties = problemStruct.Properties
         };
     }
@@ -55,7 +57,7 @@ public class ProblemConv
     {
         return new ProblemContent
         {
-            ProblemId = CommonConv.Long2ULong(problemStruct.ID),
+            ProblemId = problemStruct.ID,
             Content = problemStruct.Content
         };
     }
