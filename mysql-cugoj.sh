@@ -1,6 +1,13 @@
 #! /bin/bash
 # args[1] = password of cugoj
 # args[2] = port of docker
+# args[3] = name of docker-pod
+# 
+
+if [ ! $# -eq 3 ] then
+    echo "参数数量错误,应依次为 cugoj用户密码;docker端口;docker-pod名称"
+    exit 1
+fi
 
 mkdir -p $(pwd)/conf
 mkdir -p $(pwd)/data
@@ -12,13 +19,13 @@ create user if not exists 'cugoj'@'%' identified with mysql_native_password by '
 grant all privileges on *.* to 'cugoj'@'%';
 flush privileges;
 exit
+EOF
 echo '数据库配置成功'
 
 echo '开始创建database'
-mysql -h127.0.0.1 -P 3306 -ucugoj -p$1 <$(pwd)/conf/init.sql
+mysql -h127.0.0.1 -P 3306 -ucugoj -p$1 </etc/mysql/conf.d/init.sql
 
 echo 'Mysql for CUGOJ已启动'
-EOF
 FILEEOF
 
 cat>$(pwd)/conf/init.sql<<SQLEOF
@@ -303,7 +310,7 @@ SQLEOF
 docker kill mysql-cugoj
 docker rm mysql-cugoj
 
-docker run -itd --name mysql-cugoj -p $2:3306 -v $(pwd)/conf:/etc/mysql/conf.d -v $(pwd)/data/:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=cugoj123456 mysql
+docker run -itd --name $3 -p $2:3306 -v $(pwd)/conf:/etc/mysql/conf.d -v $(pwd)/data/:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=cugoj123456 mysql
 echo 'docker已启动'
 
 echo '等待docker就绪'
@@ -317,6 +324,5 @@ do
  b+='#'
 done
 echo
-
 
 docker exec mysql-cugoj sh /etc/mysql/conf.d/init.sh
