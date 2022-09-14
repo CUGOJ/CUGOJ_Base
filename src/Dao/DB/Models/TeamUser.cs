@@ -11,15 +11,15 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 自增ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 用户Id
         /// </summary>
-        public ulong UserId { get; set; }
+        public long UserId { get; set; }
         /// <summary>
         /// 队伍Id
         /// </summary>
-        public ulong TeamId { get; set; }
+        public long TeamId { get; set; }
         /// <summary>
         /// 用户类型
         /// </summary>

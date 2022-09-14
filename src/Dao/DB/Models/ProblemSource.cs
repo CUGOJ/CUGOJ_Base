@@ -11,7 +11,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 自增ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 题目来源名
         /// </summary>

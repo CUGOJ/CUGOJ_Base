@@ -11,11 +11,11 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 主体-标签ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 主体ID
         /// </summary>
-        public ulong TargetId { get; set; }
+        public long TargetId { get; set; }
         /// <summary>
         /// 目标主体类型
         /// </summary>
@@ -23,7 +23,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 标签ID
         /// </summary>
-        public ulong TagId { get; set; }
+        public long TagId { get; set; }
         /// <summary>
         /// 状态
         /// </summary>

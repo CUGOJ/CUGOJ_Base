@@ -4,3 +4,4 @@ logs
 obj
 *.txt
 *.json
+data

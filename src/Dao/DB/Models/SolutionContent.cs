@@ -11,11 +11,11 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 题解内容ID
         /// </summary>
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         /// <summary>
         /// 题解ID
         /// </summary>
-        public ulong SolutionId { get; set; }
+        public long SolutionId { get; set; }
         /// <summary>
         /// 题解内容
         /// </summary>
