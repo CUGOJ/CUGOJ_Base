@@ -76,4 +76,25 @@ public class DBProblemContext : IProblemContext
         await context.SaveChangesAsync();
         return problemBase.Id;
     }
+
+    public virtual async Task<List<ProblemStruct>> GetProblemList(long cursor, long limit)
+    {
+        using var context = DBContext.Context;
+        List<ProblemBase> problemBases = await (from b in context.ProblemBases
+                                                orderby b.Id
+                                                select b
+                                                 ).Skip(((int)cursor)).Take((int)limit).ToListAsync();
+        if (problemBases == null)
+        {
+            Logger.Error("获取题目列表出错, 无法获取题目基本信息, cursor: {0}, limit: {0}", cursor, limit);
+            throw new Exception("获取题目列表出错");
+        }
+
+        List<ProblemStruct> res = new List<ProblemStruct>();
+        foreach (var problemBase in problemBases)
+        {
+            res.Add(Conv.Conv.ProblemConv.ProblemPo2ProblemStruct(problemBase));
+        }
+        return res;
+    }
 }

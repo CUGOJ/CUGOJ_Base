@@ -8,9 +8,11 @@ namespace CUGOJ.Base.Dao
         private static int _initCount = new();
         private static IUserContext? _userContext = null;
         public static IUserContext? UserContext { get => _userContext; }
-
         private static IProblemContext? _problemContext = null;
         public static IProblemContext? ProblemContext { get => _problemContext; }
+        private static IContestContext? _constestContext = null;
+        public static IContestContext? ContestContext { get => _constestContext; }
+
         public static void InitDAO()
         {
             if (_initCount != 0) return;
@@ -19,10 +21,11 @@ namespace CUGOJ.Base.Dao
                 if (_initCount != 0) return;
                 _initCount++;
                 CUGOJ.Base.Dao.DB.DBContext.InitDB();
-                // CUGOJ.CUGOJ_Tools.Redis.RedisContext.InitRedis();
+                CUGOJ.CUGOJ_Tools.Redis.RedisContext.InitRedis();
 
                 _problemContext = TraceFactory.CreateTracableObject<RedisProblemContext>(true, true);
-                _userContext = TraceFactory.CreateTracableObject<DBUserContext>(true, true);
+                _userContext = TraceFactory.CreateTracableObject<RedisUserContext>(true, true);
+                _constestContext=TraceFactory.CreateTracableObject<RedisContestContext>(true, true);
             }
         }
     }

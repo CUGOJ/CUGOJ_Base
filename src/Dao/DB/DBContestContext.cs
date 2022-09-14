@@ -4,6 +4,25 @@ namespace CUGOJ.Base.Dao.DB;
 
 public class DBContestContext : IContestContext
 {
+    public async Task<List<ContestStruct>> GetContestList(long cursor, long limit)
+    {
+        using var context = DBContext.Context;
+        List<ContestBase> contestList = await (from c in context.ContestBases
+                                               orderby c.Id
+                                               select c).Skip((int)cursor).Take((int)limit).ToListAsync();
+        if (contestList == null)
+        {
+            Logger.Error("获取比赛列表出错, cursor: {0}, limit: {1}", cursor, limit);
+            throw new Exception("获取比赛列表出错");
+        }
+        List<ContestStruct> res = new List<ContestStruct>();
+        foreach (var contest in contestList)
+        {
+            res.Add(Conv.Conv.ContestConv.ContestPo2ContestStruct(contest));
+        }
+        return res;
+    }
+
     public virtual async Task<List<ContestStruct>> MulGetContestStruct(List<long> contestIDList, bool isGetDetail)
     {
         using var context = DBContext.Context;
@@ -15,7 +34,7 @@ public class DBContestContext : IContestContext
         {
             contestBases = await (from b in context.ContestBases
                                   where contestIDList.Contains(b.Id)
-            orderby b.Id
+                                  orderby b.Id
                                   select b).ToListAsync();
             contestContents = await (from b in context.ContestContents
                                      where contestIDList.Contains(b.ContestId)
@@ -74,6 +93,4 @@ public class DBContestContext : IContestContext
         await context.SaveChangesAsync();
         return contestBase.Id;
     }
-
-
 }

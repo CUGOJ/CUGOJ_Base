@@ -21,9 +21,14 @@ public class UserConv
         };
     }
 
-    public virtual User UserStruct2UserPo(UserStruct userStruct)
+    public virtual UserLoginInfoStruct UserPo2UserLoginInfoStruct(User user)
     {
-        return new User()
+        throw new NotImplementedException();
+    }
+
+    public virtual User UserStruct2UserPo(UserStruct userStruct, UserLoginInfoStruct? userLoginInfo = null)
+    {
+        var user = new User()
         {
             UserId = userStruct.ID,
             Phone = userStruct.Phone,
@@ -36,7 +41,14 @@ public class UserConv
             UserType = (int)userStruct.Type,
             Status = (int)userStruct.Status,
             CreateTime = CommonConv.Unix2DateTime(userStruct.CreateTime),
-            UpdateTime = CommonConv.Unix2DateTime(userStruct.UpdateTime)
+            UpdateTime = CommonConv.Unix2DateTime(userStruct.UpdateTime),
         };
+        if (userLoginInfo != null)
+        {
+            user.Username = userLoginInfo.Username;
+            user.Password = userLoginInfo.Password;
+            user.Salt = userLoginInfo.Salt;
+        }
+        return user;
     }
 }

@@ -9,43 +9,45 @@ public class RedisProblemContext : IProblemContext
         _dbProblemContext = TraceFactory.CreateTracableObject<DBProblemContext>(true, true);
     }
 
-    public virtual async Task<List<ProblemStruct>> MulGetProblemStruct(List<long> ProblemIDList, bool isGetDetail)
+    public virtual async Task<List<ProblemStruct>> MulGetProblemStruct(List<long> problemIDList, bool isGetDetail)
     {
-        List<ProblemStruct> problemList = new();
-        List<long> missIDList = new();
-        foreach (long problemID in ProblemIDList)
+        List<ProblemStruct>? problemList = new();
+        var context = RedisContext.Context;
+        if (context != null)
         {
-            ProblemStruct? problemStruct;
-            if (!isGetDetail)
+            foreach (long problemID in problemIDList)
             {
-                problemStruct = RedisContext.Context?.Get<ProblemStruct>("problem_" + problemID.ToString());
-            }
-            else
-            {
-                problemStruct = RedisContext.Context?.Get<ProblemStruct>("problem_detail_" + problemID.ToString());
-            }
-            if (problemStruct == null)
-            {
-                missIDList.Add(problemID);
-            }
-            else
-            {
-                problemList.Add(problemStruct);
+                ProblemStruct? problem = null;
+                if (!isGetDetail)
+                {
+                    problem = await context.GetWithCache<ProblemStruct, long>(
+                        async (id) =>
+                        {
+                            var problemStructs = await _dbProblemContext.MulGetProblemStruct(new List<long> { id }, false);
+                            return problemStructs == null ? null : problemStructs[0];
+                        },
+                        problemID,
+                        "problem_" + problemID.ToString()
+                    );
+                }
+                else
+                {
+                    problem = await context.GetWithCache<ProblemStruct, long>(
+                        async (id) =>
+                        {
+                            var problemStructs = await _dbProblemContext.MulGetProblemStruct(new List<long> { id }, true);
+                            return problemStructs == null ? null : problemStructs[0];
+                        },
+                        problemID,
+                        "problem_detail_" + problemID.ToString()
+                    );
+                }
+                if (problem != null)
+                {
+                    problemList.Add(problem);
+                }
             }
         }
-        List<ProblemStruct> missProblemList = await _dbProblemContext.MulGetProblemStruct(missIDList, isGetDetail);
-        foreach (ProblemStruct problemStruct in missProblemList)
-        {
-            if (!isGetDetail)
-            {
-                RedisContext.Context?.Set("problem_" + problemStruct.ID.ToString(), problemStruct, TimeSpan.FromSeconds(30));
-            }
-            else
-            {
-                RedisContext.Context?.Set("problem_detail_" + problemStruct.ID.ToString(), problemStruct, TimeSpan.FromSeconds(5));
-            }
-        }
-        problemList.AddRange(missProblemList);
         problemList.Sort((a, b) => a.ID.CompareTo(b.ID));
         return problemList;
     }
@@ -55,4 +57,28 @@ public class RedisProblemContext : IProblemContext
         return await _dbProblemContext.SaveProblemStruct(problemStruct);
     }
 
+    public virtual async Task<List<ProblemStruct>> GetProblemList(long cursor, long limit)
+    {
+        long pageNum = cursor / limit;
+        var context = RedisContext.Context;
+        List<ProblemStruct>? problemList = null;
+        if (context != null)
+        {
+            problemList = await context.GetWithCache<List<ProblemStruct>, PagingQueryStruct>(
+                async (pagingQueryStruct) =>
+                {
+                    return await _dbProblemContext.GetProblemList(pagingQueryStruct.Cursor, pagingQueryStruct.Limit);
+                },
+                new PagingQueryStruct { Cursor = cursor, Limit = limit },
+                "problem_list_" + pageNum.ToString(),
+                pageNum switch
+                {
+                    <= 3 => 5,
+                    <= 10 => 30,
+                    _ => 60
+                }
+            );
+        }
+        return problemList ?? new();
+    }
 }
