@@ -1,4 +1,6 @@
 #! /bin/bash
+# args[1] = password of cugoj
+# args[2] = port of docker
 
 mkdir -p $(pwd)/conf
 mkdir -p $(pwd)/data
@@ -6,14 +8,20 @@ cat>$(pwd)/conf/init.sh<<FILEEOF
 echo '进入docker容器'
 mysql -uroot -pcugoj123456 <<EOF
 use mysql;
-create user if not exists 'cugoj'@'%' identified with mysql_native_password by 'cugoj123456';
+create user if not exists 'cugoj'@'%' identified with mysql_native_password by '$1';
 grant all privileges on *.* to 'cugoj'@'%';
 flush privileges;
 exit
+echo '数据库配置成功'
+
+echo '开始创建database'
+mysql -h127.0.0.1 -P 3306 -ucugoj -p$1 <$(pwd)/conf/init.sql
+
+echo 'Mysql for CUGOJ已启动'
 EOF
 FILEEOF
 
-cat>$(pwd)/init.sql<<SQLEOF
+cat>$(pwd)/conf/init.sql<<SQLEOF
 drop database if exists \`cugoj\`;
 
 create database if not exists \`cugoj\`;
@@ -295,7 +303,7 @@ SQLEOF
 docker kill mysql-cugoj
 docker rm mysql-cugoj
 
-docker run -itd --name mysql-cugoj -p 4000:3306 -v $(pwd)/conf:/etc/mysql/conf.d -v $(pwd)/data/:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=cugoj123456 mysql
+docker run -itd --name mysql-cugoj -p $2:3306 -v $(pwd)/conf:/etc/mysql/conf.d -v $(pwd)/data/:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=cugoj123456 mysql
 echo 'docker已启动'
 
 echo '等待docker就绪'
@@ -312,9 +320,3 @@ echo
 
 
 docker exec mysql-cugoj sh /etc/mysql/conf.d/init.sh
-echo '数据库配置成功'
-yum install mysql -y
-echo '开始创建database'
-mysql -h127.0.0.1 -P 4000 -ucugoj -pcugoj123456 <./init.sql
-
-echo 'Mysql for CUGOJ已启动'
