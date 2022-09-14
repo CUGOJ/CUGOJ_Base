@@ -2,9 +2,9 @@
 # args[1] = password of cugoj
 # args[2] = port of docker
 # args[3] = name of docker-pod
-# 
+# curl -O https://ghproxy.com/https://raw.githubusercontent.com/CUGOJ/CUGOJ_Base/dev_zhaoxiao/mysql-cugoj.sh && sh mysql-cugoj.sh
 
-if [ ! $# -eq 3 ] then
+if [ ! $# -eq 3 ]; then
     echo "参数数量错误,应依次为 cugoj用户密码;docker端口;docker-pod名称"
     exit 1
 fi
@@ -307,8 +307,10 @@ CREATE TABLE \`score\`(
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '得分表';
 SQLEOF
 
-docker kill mysql-cugoj
-docker rm mysql-cugoj
+docker pull mysql:8.0.30
+
+a=`docker kill $3`
+a=`docker rm $3`
 
 docker run -itd --name $3 -p $2:3306 -v $(pwd)/conf:/etc/mysql/conf.d -v $(pwd)/data/:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=cugoj123456 mysql
 echo 'docker已启动'
@@ -325,4 +327,4 @@ do
 done
 echo
 
-docker exec mysql-cugoj sh /etc/mysql/conf.d/init.sh
+docker exec $3 sh /etc/mysql/conf.d/init.sh
