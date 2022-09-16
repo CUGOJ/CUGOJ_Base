@@ -13,39 +13,42 @@ public class RedisUserContext : IUserContext
     {
         List<UserStruct> userList = new();
         List<long> missIDList = new();
-        foreach (long userID in userIDList)
+        var context = RedisContext.Context;
+        if (context != null)
         {
-            UserStruct? userStruct;
-            if (!isGetDetail)
+            foreach (long userID in userIDList)
             {
-                userStruct = RedisContext.Context?.Get<UserStruct>("user_" + userID.ToString());
-            }
-            else
-            {
-                userStruct = RedisContext.Context?.Get<UserStruct>("user_detail_" + userID.ToString());
-            }
-            if (userStruct == null)
-            {
-                missIDList.Add(userID);
-            }
-            else
-            {
-                userList.Add(userStruct);
+                UserStruct? userStruct;
+                if (!isGetDetail)
+                {
+                    userStruct = await context.GetWithCache<UserStruct, long>(
+                        async (id) =>
+                        {
+                            var userStructList = await _dbUserContext.MulGetUserStruct(new List<long> { id }, false);
+                            return userStructList == null ? null : userStructList.FirstOrDefault();
+                        },
+                        userID,
+                        "user_" + userID.ToString()
+                    );
+                }
+                else
+                {
+                    userStruct = await context.GetWithCache<UserStruct, long>(
+                        async (id) =>
+                        {
+                            var userStructList = await _dbUserContext.MulGetUserStruct(new List<long> { id }, true);
+                            return userStructList == null ? null : userStructList.FirstOrDefault();
+                        },
+                        userID,
+                        "user_detail" + userID.ToString()
+                    );
+                }
+                if (userStruct != null)
+                {
+                    userList.Add(userStruct);
+                }
             }
         }
-        List<UserStruct> missUserList = await _dbUserContext.MulGetUserStruct(missIDList, isGetDetail);
-        foreach (UserStruct userStruct in missUserList)
-        {
-            if (!isGetDetail)
-            {
-                RedisContext.Context?.Set("user_" + userStruct.ID.ToString(), userStruct, TimeSpan.FromSeconds(30));
-            }
-            else
-            {
-                RedisContext.Context?.Set("user_detail_" + userStruct.ID.ToString(), userStruct, TimeSpan.FromSeconds(5));
-            }
-        }
-        userList.AddRange(missUserList);
         userList.Sort((a, b) => a.ID.CompareTo(b.ID));
         return userList;
     }

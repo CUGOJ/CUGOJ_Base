@@ -24,7 +24,7 @@ public class RedisProblemContext : IProblemContext
                         async (id) =>
                         {
                             var problemStructs = await _dbProblemContext.MulGetProblemStruct(new List<long> { id }, false);
-                            return problemStructs == null ? null : problemStructs[0];
+                            return problemStructs == null ? null : problemStructs.FirstOrDefault();
                         },
                         problemID,
                         "problem_" + problemID.ToString()
@@ -36,7 +36,7 @@ public class RedisProblemContext : IProblemContext
                         async (id) =>
                         {
                             var problemStructs = await _dbProblemContext.MulGetProblemStruct(new List<long> { id }, true);
-                            return problemStructs == null ? null : problemStructs[0];
+                            return problemStructs == null ? null : problemStructs.FirstOrDefault();
                         },
                         problemID,
                         "problem_detail_" + problemID.ToString()

@@ -47,7 +47,7 @@ public class DBProblemContext : IProblemContext
         || users != null && users.Count != problemBases.Count
         || sources != null && sources.Count != problemBases.Count)
         {
-            Logger.Error("查找题目出错, 详细信息与基本信息不匹配,ProblemIDLis: {0},base: {1},contents, {2},users: {3},sources: {4}", problemIDList, problemBases, problemContents, users, sources);
+            Logger.Error("查找题目出错, 详细信息与基本信息不匹配,ProblemIDList: {0}, base: {1}, contents: {2}, users: {3}, sources: {4}.", problemIDList, problemBases, problemContents, users, sources);
             throw new Exception("查找题目出错");
         }
         List<ProblemStruct> res = new List<ProblemStruct>();

@@ -1,10 +1,5 @@
 namespace CUGOJ.Base.Dao;
 
-public struct PagingQueryStruct
-{
-    public long Cursor { get; set; }
-    public long Limit { get; set; }
-}
 
 public interface IUserContext
 {
@@ -35,5 +30,5 @@ public interface ISubmissionContext
 {
     Task<List<SubmissionStruct>> MulGetSubmissionStruct(List<long> submissionIDList, bool isGetDetail);
     Task<long> SaveSubmissionStruct(SubmissionStruct submissionStruct);
-    Task<List<SubmissionStruct>> GetSubmissionList(long cursor, long limit);
+    Task<List<SubmissionStruct>> GetSubmissionList(SubmissionListQueryStruct submissionListQueryStruct);
 }

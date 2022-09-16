@@ -11,4 +11,6 @@ public static class Conv
     public static OrganizationConv OrganizationConv { get => _organizationConv; }
     private static UserConv _userConv = TraceFactory.CreateTracableObject<UserConv>(false, false);
     public static UserConv UserConv { get => _userConv; }
+    private static SubmmissionConv _submissionConv = TraceFactory.CreateTracableObject<SubmmissionConv>(false, false);
+    public static SubmmissionConv SubmmissionConv { get => _submissionConv; }
 }

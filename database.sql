@@ -189,7 +189,9 @@ CREATE TABLE `submission_base`(
     KEY `idx_submitter_problem` (`submitter_id`, `problem_id`),
     KEY `idx_contest_submitter` (`contest_id`, `submitter_id`),
     KEY `idx_contest_problem` (`contest_id`, `problem_id`),
-    KEY `idx_contest_create_time` (`contest_id`, `create_time`)
+    KEY `idx_contest_create_time` (`contest_id`, `create_time`),
+    KEY `idx_contest_submit_time` (`contest_id`,`submit_time`),
+    KEY `idx_problem_submit_time` (`problem_id`,`submit_time`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '提交基本信息表';
 
 CREATE TABLE `submission_content`(
