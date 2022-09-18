@@ -32,3 +32,10 @@ public interface ISubmissionContext
     Task<long> SaveSubmissionStruct(SubmissionStruct submissionStruct);
     Task<List<SubmissionStruct>> GetSubmissionList(SubmissionListQueryStruct submissionListQueryStruct);
 }
+
+public interface IRegisterContext
+{
+    Task<List<RegisterStruct>> MulGetRegisterStruct(List<long> registerIDList, bool isGetDetail);
+    Task<long> SaveRegisterStruct(RegisterStruct registerStruct);
+    Task<List<RegisterStruct>> GetRegisterList(PagingQueryStruct pagingQueryStruct);
+}
