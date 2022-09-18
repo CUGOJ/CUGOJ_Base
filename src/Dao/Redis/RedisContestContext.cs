@@ -17,7 +17,7 @@ public class RedisContestContext : IContestContext
         List<ContestStruct>? contestList = null;
         if (context != null)
         {
-            contestList = await context.GetWithCache<List<ContestStruct>, PagingQueryStruct>(
+            contestList = await context.GetWithCacheKey<List<ContestStruct>, PagingQueryStruct>(
                 async (pagingQueryStruct) =>
                 {
                     return await _dbContestContext.GetContestList(pagingQueryStruct.Cursor, pagingQueryStruct.Limit);
@@ -46,7 +46,7 @@ public class RedisContestContext : IContestContext
                 ContestStruct? contest = null;
                 if (!isGetDetail)
                 {
-                    contest = await context.GetWithCache<ContestStruct, long>(
+                    contest = await context.GetWithCacheKey<ContestStruct, long>(
                         async (id) =>
                         {
                             var contestStructs = await _dbContestContext.MulGetContestStruct(new List<long> { id }, false);
@@ -58,7 +58,7 @@ public class RedisContestContext : IContestContext
                 }
                 else
                 {
-                    contest = await context.GetWithCache<ContestStruct, long>(
+                    contest = await context.GetWithCacheKey<ContestStruct, long>(
                         async (id) =>
                         {
                             var res = await _dbContestContext.MulGetContestStruct(new List<long> { id }, true);

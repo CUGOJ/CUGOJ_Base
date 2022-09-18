@@ -11,7 +11,7 @@ public class RedisProblemContext : IProblemContext
 
     public virtual async Task<List<ProblemStruct>> MulGetProblemStruct(List<long> problemIDList, bool isGetDetail)
     {
-        List<ProblemStruct>? problemList = new();
+        List<ProblemStruct> problemList = new();
         var context = RedisContext.Context;
         if (context != null)
         {
@@ -20,7 +20,8 @@ public class RedisProblemContext : IProblemContext
                 ProblemStruct? problem = null;
                 if (!isGetDetail)
                 {
-                    problem = await context.GetWithCache<ProblemStruct, long>(
+                    problem = await context.GetWithCacheKey<ProblemStruct, long>
+                    (
                         async (id) =>
                         {
                             var problemStructs = await _dbProblemContext.MulGetProblemStruct(new List<long> { id }, false);
@@ -32,7 +33,8 @@ public class RedisProblemContext : IProblemContext
                 }
                 else
                 {
-                    problem = await context.GetWithCache<ProblemStruct, long>(
+                    problem = await context.GetWithCacheKey<ProblemStruct, long>
+                    (
                         async (id) =>
                         {
                             var problemStructs = await _dbProblemContext.MulGetProblemStruct(new List<long> { id }, true);
@@ -64,7 +66,8 @@ public class RedisProblemContext : IProblemContext
         List<ProblemStruct>? problemList = null;
         if (context != null)
         {
-            problemList = await context.GetWithCache<List<ProblemStruct>, PagingQueryStruct>(
+            problemList = await context.GetWithCacheKey<List<ProblemStruct>, PagingQueryStruct>
+            (
                 async (pagingQueryStruct) =>
                 {
                     return await _dbProblemContext.GetProblemList(pagingQueryStruct.Cursor, pagingQueryStruct.Limit);

@@ -9,7 +9,7 @@ public class RedisUserContext : IUserContext
         _dbUserContext = TraceFactory.CreateTracableObject<DBUserContext>(true, true);
     }
 
-    public async Task<List<UserStruct>> MulGetUserStruct(List<long> userIDList, bool isGetDetail)
+    public virtual async Task<List<UserStruct>> MulGetUserStruct(List<long> userIDList, bool isGetDetail)
     {
         List<UserStruct> userList = new();
         List<long> missIDList = new();
@@ -21,7 +21,7 @@ public class RedisUserContext : IUserContext
                 UserStruct? userStruct;
                 if (!isGetDetail)
                 {
-                    userStruct = await context.GetWithCache<UserStruct, long>(
+                    userStruct = await context.GetWithCacheKey<UserStruct, long>(
                         async (id) =>
                         {
                             var userStructList = await _dbUserContext.MulGetUserStruct(new List<long> { id }, false);
@@ -33,7 +33,7 @@ public class RedisUserContext : IUserContext
                 }
                 else
                 {
-                    userStruct = await context.GetWithCache<UserStruct, long>(
+                    userStruct = await context.GetWithCacheKey<UserStruct, long>(
                         async (id) =>
                         {
                             var userStructList = await _dbUserContext.MulGetUserStruct(new List<long> { id }, true);
@@ -52,7 +52,7 @@ public class RedisUserContext : IUserContext
         userList.Sort((a, b) => a.ID.CompareTo(b.ID));
         return userList;
     }
-    public async Task<long> SaveUserStruct(UserStruct userStruct)
+    public virtual async Task<long> SaveUserStruct(UserStruct userStruct)
     {
         return await _dbUserContext.SaveUserStruct(userStruct);
     }

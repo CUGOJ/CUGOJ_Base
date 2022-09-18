@@ -4,7 +4,7 @@ namespace CUGOJ.Base.Dao.DB;
 
 public class DBContestContext : IContestContext
 {
-    public async Task<List<ContestStruct>> GetContestList(long cursor, long limit)
+    public virtual async Task<List<ContestStruct>> GetContestList(long cursor, long limit)
     {
         using var context = DBContext.Context;
         List<ContestBase> contestList = await (from c in context.ContestBases

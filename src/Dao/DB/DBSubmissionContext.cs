@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CUGOJ.Base.Dao.DB;
 public class DBSubmissionContext : ISubmissionContext
 {
-    public async Task<List<SubmissionStruct>> GetSubmissionList(SubmissionListQueryStruct submissionListQueryStruct)
+    public virtual async Task<List<SubmissionStruct>> GetSubmissionList(SubmissionListQueryStruct submissionListQueryStruct)
     {
         List<SubmissionBase>? submissionBaseList = null;
         using var context = DBContext.Context;
@@ -63,7 +63,7 @@ public class DBSubmissionContext : ISubmissionContext
         return res;
     }
 
-    public async Task<List<SubmissionStruct>> MulGetSubmissionStruct(List<long> submissionIDList, bool isGetDetail)
+    public virtual async Task<List<SubmissionStruct>> MulGetSubmissionStruct(List<long> submissionIDList, bool isGetDetail)
     {
         using var context = DBContext.Context;
         List<SubmissionBase>? submissionBases = null;
@@ -111,7 +111,7 @@ public class DBSubmissionContext : ISubmissionContext
         return res;
     }
 
-    public async Task<long> SaveSubmissionStruct(SubmissionStruct submissionStruct)
+    public virtual async Task<long> SaveSubmissionStruct(SubmissionStruct submissionStruct)
     {
         using var context = DBContext.Context;
         SubmissionBase submissionBase = Conv.Conv.SubmmissionConv.SubmissionStruct2SubmissionPo(submissionStruct);
