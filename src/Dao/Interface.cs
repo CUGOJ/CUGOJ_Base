@@ -33,3 +33,10 @@ public interface ISubmissionContext
     Task<List<SubmissionStruct>> GetSubmissionList(SubmissionListQueryStruct submissionListQueryStruct);
     Dictionary<long, int> GetSubmissionResult(long userID, List<long> problemID, int ac_staus);
 }
+
+public interface IRegisterContext
+{
+    Task<List<RegisterStruct>> MulGetRegisterStruct(List<long> registerIDList, bool isGetDetail);
+    Task<long> SaveRegisterStruct(RegisterStruct registerStruct);
+    Task<List<RegisterStruct>> GetRegisterList(PagingQueryStruct pagingQueryStruct);
+}
