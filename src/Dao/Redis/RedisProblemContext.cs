@@ -59,9 +59,9 @@ public class RedisProblemContext : IProblemContext
         return await _dbProblemContext.SaveProblemStruct(problemStruct);
     }
 
-    public virtual async Task<List<ProblemStruct>> GetProblemList(long cursor, long limit)
+    public virtual async Task<List<ProblemStruct>> GetProblemList(PagingQueryStruct pagingQueryStruct)
     {
-        long pageNum = cursor / limit;
+        long pageNum = pagingQueryStruct.Cursor / pagingQueryStruct.Limit;
         var context = RedisContext.Context;
         List<ProblemStruct>? problemList = null;
         if (context != null)
@@ -70,9 +70,9 @@ public class RedisProblemContext : IProblemContext
             (
                 async (pagingQueryStruct) =>
                 {
-                    return await _dbProblemContext.GetProblemList(pagingQueryStruct.Cursor, pagingQueryStruct.Limit);
+                    return await _dbProblemContext.GetProblemList(pagingQueryStruct);
                 },
-                new PagingQueryStruct { Cursor = cursor, Limit = limit },
+                pagingQueryStruct,
                 "problem_list_" + pageNum.ToString(),
                 pageNum switch
                 {

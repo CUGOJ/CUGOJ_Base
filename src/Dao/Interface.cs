@@ -4,7 +4,7 @@ namespace CUGOJ.Base.Dao;
 public interface IUserContext
 {
     Task<List<UserStruct>> MulGetUserStruct(List<long> userIDList, bool isGetDetail);
-    Task<long> SaveUserStruct(UserStruct userStruct);
+    Task<long> SaveUserStruct(UserStruct userStruct, UserLoginInfoStruct? userLoginInfoStruct = null);
 }
 
 public interface IProblemContext
@@ -16,7 +16,7 @@ public interface IProblemContext
     /// </summary>
     /// <param name="cursor">偏移量</param>
     /// <param name="limit">页大小</param>
-    Task<List<ProblemStruct>> GetProblemList(long cursor, long limit);
+    Task<List<ProblemStruct>> GetProblemList(PagingQueryStruct pagingQueryStruct);
 }
 
 public interface IContestContext
@@ -31,4 +31,5 @@ public interface ISubmissionContext
     Task<List<SubmissionStruct>> MulGetSubmissionStruct(List<long> submissionIDList, bool isGetDetail);
     Task<long> SaveSubmissionStruct(SubmissionStruct submissionStruct);
     Task<List<SubmissionStruct>> GetSubmissionList(SubmissionListQueryStruct submissionListQueryStruct);
+    Dictionary<long, int> GetSubmissionResult(long userID, List<long> problemID, int ac_staus);
 }

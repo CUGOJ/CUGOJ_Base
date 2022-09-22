@@ -53,12 +53,21 @@ public class ProblemConv
         };
     }
 
-    public virtual ProblemContent ProblemStruct2ContentPo(ProblemStruct problemStruct)
+    public virtual ProblemContent ProblemStruct2ContentPo(ProblemStruct problemStruct, ProblemContent? oldContent = null)
     {
-        return new ProblemContent
+        if (oldContent != null)
         {
-            ProblemId = problemStruct.ID,
-            Content = problemStruct.Content
-        };
+            oldContent.Content = problemStruct.Content;
+            oldContent.ProblemId = problemStruct.ID;
+            return oldContent;
+        }
+        else
+        {
+            return new ProblemContent
+            {
+                ProblemId = problemStruct.ID,
+                Content = problemStruct.Content
+            };
+        }
     }
 }

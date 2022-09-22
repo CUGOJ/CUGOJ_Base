@@ -64,29 +64,40 @@ public class DBProblemContext : IProblemContext
     public virtual async Task<long> SaveProblemStruct(ProblemStruct problemStruct)
     {
         using var context = DBContext.Context;
-        var problemBase = Conv.Conv.ProblemConv.ProblemStruct2BasePo(problemStruct);
-        context.Update(problemBase);
-
-        if (problemStruct.Content != null && problemStruct.Content != string.Empty)
+        using var transaction = await context.Database.BeginTransactionAsync();
+        try
         {
-            problemStruct.ID = problemBase.Id;
-            ProblemContent problemContent = Conv.Conv.ProblemConv.ProblemStruct2ContentPo(problemStruct);
-            context.Update(problemContent);
+            var problemBase = Conv.Conv.ProblemConv.ProblemStruct2BasePo(problemStruct);
+            context.ProblemBases.Update(problemBase);
+            context.Entry<ProblemBase>(problemBase).Property("UpdateTime").IsModified = false;
+            context.Entry<ProblemBase>(problemBase).Property("CreateTime").IsModified = false;
+            await context.SaveChangesAsync();
+            if (problemStruct.Content != null && problemStruct.Content != string.Empty)
+            {
+                problemStruct.ID = problemBase.Id;
+                context.ProblemContents.Update(Conv.Conv.ProblemConv.ProblemStruct2ContentPo(problemStruct, await (from c in context.ProblemContents where c.ProblemId == problemBase.Id select c).FirstOrDefaultAsync()));
+                await context.SaveChangesAsync();
+            }
+            await transaction.CommitAsync();
+            return problemBase.Id;
         }
-        await context.SaveChangesAsync();
-        return problemBase.Id;
+        catch (Exception e)
+        {
+            Logger.Error("SaveProblemStruct出错, {0}.", e);
+            throw new Exception("SaveProblemStruct出错");
+        }
     }
 
-    public virtual async Task<List<ProblemStruct>> GetProblemList(long cursor, long limit)
+    public virtual async Task<List<ProblemStruct>> GetProblemList(PagingQueryStruct pagingQueryStruct)
     {
         using var context = DBContext.Context;
         List<ProblemBase> problemBases = await (from b in context.ProblemBases
                                                 orderby b.Id
                                                 select b
-                                                 ).Skip(((int)cursor)).Take((int)limit).ToListAsync();
+                                                 ).Skip(((int)pagingQueryStruct.Cursor)).Take((int)pagingQueryStruct.Limit).ToListAsync();
         if (problemBases == null)
         {
-            Logger.Error("获取题目列表出错, 无法获取题目基本信息, cursor: {0}, limit: {0}", cursor, limit);
+            Logger.Error("获取题目列表出错, 无法获取题目基本信息, cursor: {0}, limit: {0}", pagingQueryStruct.Cursor, pagingQueryStruct.Limit);
             throw new Exception("获取题目列表出错");
         }
 

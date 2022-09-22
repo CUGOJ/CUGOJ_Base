@@ -112,6 +112,11 @@ public class RedisSubmissionContext : ISubmissionContext
         return submissionStructList ?? new();
     }
 
+    public Dictionary<long, int> GetSubmissionResult(long userID, List<long> problemID, int ac_staus)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<List<SubmissionStruct>> MulGetSubmissionStruct(List<long> submissionIDList, bool isGetDetail)
     {
         List<SubmissionStruct> submissionStructList = new();
@@ -138,7 +143,7 @@ public class RedisSubmissionContext : ISubmissionContext
                 {
                     submissionStruct = await context.GetWithCacheKey<SubmissionStruct, long>
                     (
-                        async (id) =>
+                       async (id) =>
                         {
                             var submissionStructs = await _dbSubmissionContext.MulGetSubmissionStruct(new List<long> { id }, true);
                             return submissionStructs == null ? null : submissionStructs.FirstOrDefault();

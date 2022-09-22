@@ -46,7 +46,7 @@ public class DBUserContext : IUserContext
         }
         if (users == null)
         {
-            Logger.Error("查找用户出错，无法获取用户信息。UserIDList:{0}", userIDList);
+            Logger.Error("查找用户出错, 无法获取用户信息。UserIDList:{0}", userIDList);
             throw new Exception("查找用户出错");
         }
         List<UserStruct> res = new();
@@ -57,10 +57,11 @@ public class DBUserContext : IUserContext
         return res;
     }
 
-    public virtual async Task<long> SaveUserStruct(UserStruct userStruct)
+    public virtual async Task<long> SaveUserStruct(UserStruct userStruct, UserLoginInfoStruct? userLoginInfoStruct = null)
     {
         using var context = DBContext.Context;
-        User user = Conv.Conv.UserConv.UserStruct2UserPo(userStruct);
+        User user = Conv.Conv.UserConv.UserStruct2UserPo(userStruct, userLoginInfoStruct, await (from u in context.Users where u.UserId == userStruct.ID select u).AsNoTracking().FirstOrDefaultAsync());
+        user.UpdateTime = user.CreateTime = null;
         context.Users.Update(user);
         await context.SaveChangesAsync();
         return user.UserId;

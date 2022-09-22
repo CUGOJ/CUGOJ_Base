@@ -63,6 +63,11 @@ public class DBSubmissionContext : ISubmissionContext
         return res;
     }
 
+    public Dictionary<long, int> GetSubmissionResult(long userID, List<long> problemID, int ac_staus)
+    {
+        throw new NotImplementedException();
+    }
+
     public virtual async Task<List<SubmissionStruct>> MulGetSubmissionStruct(List<long> submissionIDList, bool isGetDetail)
     {
         using var context = DBContext.Context;

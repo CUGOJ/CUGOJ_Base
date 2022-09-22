@@ -25,7 +25,7 @@ namespace CUGOJ.Base.Dao
 
                 _problemContext = TraceFactory.CreateTracableObject<RedisProblemContext>(true, true);
                 _userContext = TraceFactory.CreateTracableObject<RedisUserContext>(true, true);
-                _constestContext=TraceFactory.CreateTracableObject<RedisContestContext>(true, true);
+                _constestContext = TraceFactory.CreateTracableObject<RedisContestContext>(true, true);
             }
         }
     }

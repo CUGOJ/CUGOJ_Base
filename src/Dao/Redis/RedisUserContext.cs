@@ -21,26 +21,31 @@ public class RedisUserContext : IUserContext
                 UserStruct? userStruct;
                 if (!isGetDetail)
                 {
-                    userStruct = await context.GetWithCacheKey<UserStruct, long>(
+                    userStruct = await context.GetWithCacheKey<UserStruct, long>
+                    (
                         async (id) =>
                         {
                             var userStructList = await _dbUserContext.MulGetUserStruct(new List<long> { id }, false);
                             return userStructList == null ? null : userStructList.FirstOrDefault();
+                            
                         },
                         userID,
-                        "user_" + userID.ToString()
+                        "user_" + userID.ToString(),
+                        50
                     );
                 }
                 else
                 {
-                    userStruct = await context.GetWithCacheKey<UserStruct, long>(
+                    userStruct = await context.GetWithCacheKey<UserStruct, long>
+                    (
                         async (id) =>
                         {
                             var userStructList = await _dbUserContext.MulGetUserStruct(new List<long> { id }, true);
                             return userStructList == null ? null : userStructList.FirstOrDefault();
                         },
                         userID,
-                        "user_detail" + userID.ToString()
+                        "user_detail_" + userID.ToString(),
+                        50
                     );
                 }
                 if (userStruct != null)
@@ -52,8 +57,8 @@ public class RedisUserContext : IUserContext
         userList.Sort((a, b) => a.ID.CompareTo(b.ID));
         return userList;
     }
-    public virtual async Task<long> SaveUserStruct(UserStruct userStruct)
+    public virtual async Task<long> SaveUserStruct(UserStruct userStruct, UserLoginInfoStruct? userLoginInfoStruct = null)
     {
-        return await _dbUserContext.SaveUserStruct(userStruct);
+        return await _dbUserContext.SaveUserStruct(userStruct, userLoginInfoStruct);
     }
 }

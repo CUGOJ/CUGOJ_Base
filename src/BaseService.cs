@@ -20,17 +20,18 @@ public class BaseServiceHandler : CUGOJ.RPC.Gen.Services.Base.BaseService.IAsync
             {
                 throw new Exception("数据库连接失败");
             }
-            bool isGetDetail =  req.__isset.IsGetUserDetail && req.IsGetUserDetail;
+            bool isGetDetail = req.__isset.IsGetUserDetail && req.IsGetUserDetail;
             resp.UserList = await DaoContext.UserContext.MulGetUserStruct(req.UserIDList, isGetDetail);
             resp.BaseResp = RPCTools.SuccessBaseResp();
         }
         catch (Exception e)
         {
-            Logger.Error($"MulGetUserInfo出错\n{e}");
+            Logger.Error("MulGetUserInfo出错: {0}.", e);
             resp.BaseResp = RPCTools.ErrorBaseResp(e);
         }
         return resp;
     }
+
     public virtual async Task<SaveUserInfoResponse> SaveUserInfo(SaveUserInfoRequest req, CancellationToken cancellationToken = default)
     {
         SaveUserInfoResponse resp = new();
@@ -40,7 +41,7 @@ public class BaseServiceHandler : CUGOJ.RPC.Gen.Services.Base.BaseService.IAsync
             {
                 throw new Exception("数据库连接失败");
             }
-            long userID = await DaoContext.UserContext.SaveUserStruct(req.User);
+            long userID = await DaoContext.UserContext.SaveUserStruct(req.User, req.UserLoginInfo);
             resp.UserID = userID;
             resp.BaseResp = RPCTools.SuccessBaseResp();
         }
@@ -95,7 +96,22 @@ public class BaseServiceHandler : CUGOJ.RPC.Gen.Services.Base.BaseService.IAsync
 
     public virtual async Task<GetProblemListResponse> GetProblemList(GetProblemListRequest req, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        GetProblemListResponse resp = new();
+        try
+        {
+            if (DaoContext.ProblemContext == null)
+            {
+                throw new Exception("数据库连接失败");
+            }
+            resp.ProblemList = await DaoContext.ProblemContext.GetProblemList(new PagingQueryStruct { Cursor = req.Cursor, Limit = req.Limit });
+            resp.BaseResp = RPCTools.SuccessBaseResp();
+        }
+        catch (Exception e)
+        {
+            Logger.Error("GetProblemList出错, {0}", e);
+            resp.BaseResp = RPCTools.ErrorBaseResp(e);
+        }
+        return resp;
     }
     public virtual async Task<SaveContestInfoResponse> SaveContestInfo(SaveContestInfoRequest req, CancellationToken cancellationToken = default)
     {
@@ -130,7 +146,7 @@ public class BaseServiceHandler : CUGOJ.RPC.Gen.Services.Base.BaseService.IAsync
         }
         catch (Exception e)
         {
-            Logger.Error($"MulGetContestInfo出错\n{e}");
+            Logger.Error("MulGetContestInfo出错, {0}", e);
             resp.BaseResp = RPCTools.ErrorBaseResp(e);
         }
         return resp;

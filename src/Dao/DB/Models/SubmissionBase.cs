@@ -15,7 +15,7 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 提交时间
         /// </summary>
-        public DateTime SubmitTime { get; set; }
+        public DateTime? SubmitTime { get; set; }
         /// <summary>
         /// 提交者ID
         /// </summary>
@@ -43,11 +43,11 @@ namespace CUGOJ.Base.Dao.DB.Models
         /// <summary>
         /// 更新时间
         /// </summary>
-        public DateTime UpdateTime { get; set; }
+        public DateTime? UpdateTime { get; set; }
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime CreateTime { get; set; }
+        public DateTime? CreateTime { get; set; }
         /// <summary>
         /// 特定配置JSON
         /// </summary>

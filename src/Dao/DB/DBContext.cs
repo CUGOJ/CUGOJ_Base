@@ -32,6 +32,7 @@ internal static class DBContext
             {
                 var options = new DbContextOptionsBuilder<CUGOJContext>()
                 .UseMySql(CUGOJ.CUGOJ_Tools.Context.Context.ServiceBaseInfo.MysqlAddress, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"))
+                .LogTo(Console.WriteLine).EnableSensitiveDataLogging()
                 .Options;
                 _factory = new PooledDbContextFactory<CUGOJContext>(options);
             }

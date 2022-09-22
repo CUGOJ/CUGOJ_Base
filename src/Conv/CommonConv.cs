@@ -2,14 +2,14 @@ namespace CUGOJ.Base.Conv;
 
 public static class CommonConv
 {
-    public static long DateTime2Unix(DateTime time)
+    public static long DateTime2Unix(DateTime? time)
     {
-        return ((long)(time - DateTime.UnixEpoch).TotalSeconds);
+        return time == null ? 0 : ((long)(time.Value - DateTime.UnixEpoch).TotalSeconds);
     }
 
-    public static DateTime Unix2DateTime(long time)
+    public static DateTime? Unix2DateTime(long time)
     {
-        return DateTime.UnixEpoch.AddSeconds(time);
+        return time <= 0 ? null : DateTime.UnixEpoch.AddSeconds(time);
     }
 
     public static long ULong2Long(ulong? value)
