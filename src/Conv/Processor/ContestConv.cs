@@ -46,12 +46,21 @@ public class ContestConv
         };
     }
 
-    public virtual ContestContent ContestStruct2ContentPo(ContestStruct contestStruct)
+    public virtual ContestContent ContestStruct2ContentPo(ContestStruct contestStruct, ContestContent? oldContent = null)
     {
-        return new ContestContent
+        if (oldContent != null)
         {
-            Id = contestStruct.ID,
-            Content = contestStruct.Content,
-        };
+            oldContent.ContestId = contestStruct.ID;
+            oldContent.Content = contestStruct.Content;
+            return oldContent;
+        }
+        else
+        {
+            return new ContestContent
+            {
+                ContestId = contestStruct.ID,
+                Content = contestStruct.Content,
+            };
+        }
     }
 }

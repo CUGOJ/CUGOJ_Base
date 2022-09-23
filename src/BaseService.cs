@@ -153,7 +153,22 @@ public class BaseServiceHandler : CUGOJ.RPC.Gen.Services.Base.BaseService.IAsync
     }
     public virtual async Task<GetContestListResponse> GetContestList(GetContestListRequest req, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        GetContestListResponse resp = new();
+        try
+        {
+            if (DaoContext.ContestContext == null)
+            {
+                throw new Exception("数据库连接失败");
+            }
+            resp.ContestList = await DaoContext.ContestContext.GetContestList(new PagingQueryStruct { Cursor = req.Cursor, Limit = req.Limit });
+            resp.BaseResp = RPCTools.SuccessBaseResp();
+        }
+        catch (Exception e)
+        {
+            Logger.Error("GetContestList出错, {0}.", e);
+            resp.BaseResp = RPCTools.ErrorBaseResp(e);
+        }
+        return resp;
     }
     public virtual async Task<SaveSubmissionInfoResponse> SaveSubmissionInfo(SaveSubmissionInfoRequest req, CancellationToken cancellationToken = default)
     {

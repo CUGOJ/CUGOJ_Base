@@ -23,7 +23,7 @@ public interface IContestContext
 {
     Task<List<ContestStruct>> MulGetContestStruct(List<long> contestIDList, bool isGetDetail);
     Task<long> SaveContestStruct(ContestStruct contestStruct);
-    Task<List<ContestStruct>> GetContestList(long cursor, long limit);
+    Task<List<ContestStruct>> GetContestList(PagingQueryStruct pagingQueryStruct);
 }
 
 public interface ISubmissionContext

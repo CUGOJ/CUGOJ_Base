@@ -4,15 +4,15 @@ namespace CUGOJ.Base.Dao.DB;
 
 public class DBContestContext : IContestContext
 {
-    public virtual async Task<List<ContestStruct>> GetContestList(long cursor, long limit)
+    public virtual async Task<List<ContestStruct>> GetContestList(PagingQueryStruct pagingQueryStruct)
     {
         using var context = DBContext.Context;
         List<ContestBase> contestList = await (from c in context.ContestBases
                                                orderby c.Id
-                                               select c).Skip((int)cursor).Take((int)limit).ToListAsync();
+                                               select c).Skip((int)pagingQueryStruct.Cursor).Take((int)pagingQueryStruct.Limit).ToListAsync();
         if (contestList == null)
         {
-            Logger.Error("获取比赛列表出错, cursor: {0}, limit: {1}", cursor, limit);
+            Logger.Error("获取比赛列表出错, cursor: {0}, limit: {1}", pagingQueryStruct.Cursor, pagingQueryStruct.Limit);
             throw new Exception("获取比赛列表出错");
         }
         List<ContestStruct> res = new List<ContestStruct>();
@@ -82,15 +82,27 @@ public class DBContestContext : IContestContext
     public virtual async Task<long> SaveContestStruct(ContestStruct contestStruct)
     {
         using var context = DBContext.Context;
-        ContestBase contestBase = Conv.Conv.ContestConv.ContestStruct2BasePo(contestStruct);
-        context.ContestBases.Update(contestBase);
-        if (contestStruct.Content != null && contestStruct.Content != string.Empty)
+        using var transaction = await context.Database.BeginTransactionAsync();
+        try
         {
-            contestStruct.ID = contestBase.Id;
-            ContestContent contestContent = Conv.Conv.ContestConv.ContestStruct2ContentPo(contestStruct);
-            context.ContestContents.Update(contestContent);
+            ContestBase contestBase = Conv.Conv.ContestConv.ContestStruct2BasePo(contestStruct);
+            context.Entry<ContestBase>(contestBase).Property(p=>p.CreateTime).IsModified = false;
+            context.Entry<ContestBase>(contestBase).Property(p=>p.UpdateTime).IsModified = false;
+            context.ContestBases.Update(contestBase);
+            await context.SaveChangesAsync();
+            if (contestStruct.Content != null && contestStruct.Content != string.Empty)
+            {
+                contestStruct.ID = contestBase.Id;
+                context.ContestContents.Update(Conv.Conv.ContestConv.ContestStruct2ContentPo(contestStruct,await (from c in context.ContestContents where c.ContestId==contestBase.Id select c).FirstOrDefaultAsync()));
+                await context.SaveChangesAsync();
+            }
+            await transaction.CommitAsync();
+            return contestBase.Id;
         }
-        await context.SaveChangesAsync();
-        return contestBase.Id;
+        catch(Exception e)
+        {
+            Logger.Error("SaveContestStruct出错, {0}.", e);
+            throw new Exception("SaveContestStruct出错");
+        }
     }
 }

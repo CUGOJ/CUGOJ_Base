@@ -10,9 +10,9 @@ public class RedisContestContext : IContestContext
     {
         _dbContestContext = TraceFactory.CreateTracableObject<DBContestContext>(true, true);
     }
-    public async Task<List<ContestStruct>> GetContestList(long cursor, long limit)
+    public async Task<List<ContestStruct>> GetContestList(PagingQueryStruct pagingQueryStruct)
     {
-        long pageNum = cursor / limit;
+        long pageNum = pagingQueryStruct.Cursor/ pagingQueryStruct.Limit;
         var context = RedisContext.Context;
         List<ContestStruct>? contestList = null;
         if (context != null)
@@ -20,9 +20,9 @@ public class RedisContestContext : IContestContext
             contestList = await context.GetWithCacheKey<List<ContestStruct>, PagingQueryStruct>(
                 async (pagingQueryStruct) =>
                 {
-                    return await _dbContestContext.GetContestList(pagingQueryStruct.Cursor, pagingQueryStruct.Limit);
+                    return await _dbContestContext.GetContestList(pagingQueryStruct);
                 },
-                new PagingQueryStruct { Cursor = cursor, Limit = limit },
+                pagingQueryStruct,
                 "contest_list_" + pageNum.ToString(),
                 pageNum switch
                 {
